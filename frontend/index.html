@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Noite da Pizza</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; background: #fff5e6; }
+    h1 { color: #d35400; }
+    .item { margin: 1rem 0; }
+    button { margin-left: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>🍕 Noite da Pizza</h1>
+  <div id="items"></div>
+  <script>
+    const apiUrl = "__API_URL__";
+
+    async function loadItems() {
+      const res = await fetch(`${apiUrl}/items`);
+      const items = await res.json();
+      const container = document.getElementById('items');
+      container.innerHTML = '';
+      items.forEach(({ item, quemVaiLevar }) => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <strong>${item}</strong> — Levando: ${Array.isArray(quemVaiLevar) ? quemVaiLevar.join(', ') : 'ninguém ainda'}
+          <input type="text" placeholder="Seu nome" />
+          <button onclick="addPerson('${item}', this)">Levar</button>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function addPerson(item, btn) {
+      const input = btn.previousElementSibling;
+      const name = input.value.trim();
+      if (!name) return alert("Digite seu nome!");
+      await fetch(`${apiUrl}/items/${encodeURIComponent(item)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name }),
+      });
+      loadItems();
+    }
+
+    loadItems();
+  </script>
+</body>
+</html>
