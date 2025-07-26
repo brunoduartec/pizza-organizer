@@ -9,12 +9,22 @@ echo "📦 Empacotando Lambdas..."
 
 cd infra/lambda
 
+echo "📦 Empacotando GET"
 cd get_items && zip -r ../get_items.zip . 
-
 cd ..
 
-cd add_item && zip -r ../add_item.zip .
+echo "📦 Empacotando ADD"
+cd add_item && zip -r ../add_item.zip . 
+cd ..
 
+echo "📦 Empacotando UPDATE"
+cd update_item && zip -r ../update_item.zip . 
+cd ..
+
+echo "📦 Empacotando PATCH 1"
+cd patch_item 
+echo "📦 Empacotando PATCH 2"
+zip -r ../patch_item.zip . 
 cd ../..
 
 echo "🧹 Limpando cache do Terraform..."

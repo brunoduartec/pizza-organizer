@@ -6,7 +6,7 @@ exports.handler = async () => {
   
   const items = data.Items.map(({ item, quemVaiLevar, quantidade, unidade }) => ({
     item,
-    quemVaiLevar: quemVaiLevar?.values ? quemVaiLevar.values : [],
+    quemVaiLevar: Array.isArray(quemVaiLevar) ? quemVaiLevar : [],
     quantidade,
     unidade
   }));
