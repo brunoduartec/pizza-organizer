@@ -4,9 +4,11 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 exports.handler = async () => {
   const data = await docClient.scan({ TableName: "PizzaPartyItems" }).promise();
   
-  const items = data.Items.map(({ item, quemVaiLevar }) => ({
+  const items = data.Items.map(({ item, quemVaiLevar, quantidade, unidade }) => ({
     item,
-    quemVaiLevar: quemVaiLevar?.values ? quemVaiLevar.values : []
+    quemVaiLevar: quemVaiLevar?.values ? quemVaiLevar.values : [],
+    quantidade,
+    unidade
   }));
 
   return {

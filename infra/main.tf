@@ -153,14 +153,6 @@ resource "aws_s3_bucket" "pizza_site" {
   }
 }
 
-resource "aws_s3_object" "site_index" {
-  bucket       = aws_s3_bucket.pizza_site.bucket
-  key          = "index.html"
-  content      = local.index_with_api
-  content_type = "text/html"
-  acl          = "public-read"
-}
-
 resource "aws_s3_bucket_ownership_controls" "pizza_site_controls" {
   bucket = aws_s3_bucket.pizza_site.id
 
@@ -197,6 +189,10 @@ resource "random_id" "suffix" {
 
 output "s3_static_site_url" {
   value = aws_s3_bucket.pizza_site.bucket_regional_domain_name
+}
+
+output "s3_bucket_name" {
+  value = aws_s3_bucket.pizza_site.id
 }
 
 output "pizza_api_url" {
